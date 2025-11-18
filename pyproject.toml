@@ -41,7 +41,7 @@ environment.ANDROID_API_LEVEL = "24"
 
 
 [project]
-name = "calculator_ex_pkg"
+name = "calculator_ex_pkg_jp"
 version = "0.7.0"
 requires-python = ">=3.10"
 description = "Calculator demo with pybind11"

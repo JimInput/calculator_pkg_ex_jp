@@ -1,5 +1,6 @@
-from calculator_pkg_ex_jp.file_calculator import FileCalculator
 from calculator_pkg_ex_jp._core import CPPFileCalculator
+from calculator_pkg_ex_jp.file_calculator import FileCalculator
+
 # from ..file_calculator import FileCalculator
 
 

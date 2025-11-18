@@ -1,23 +1,61 @@
 [build-system]
-requires = ["setuptools>=69.0.3", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["scikit-build-core>=0.11", "pybind11>=3.0"]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+minimum-version = "build-system.requires"
+wheel.packages = ["src/calculator_pkg_ex_jp"]
+
+[tool.cibuildwheel]
+build-frontend = "build[uv]"
+enable = ["pypy"]
+test-command = "python -m pytest tests"
+test-sources = ["pyproject.toml", "tests"]
+test-groups = ["test"]
+
+[tool.cibuildwheel.pyodide]
+build-frontend = {name = "build", args = ["--exports", "whole_archive"]}
+
+[tool.cibuildwheel.ios]
+build-frontend = "build"
+xbuild-tools = ["cmake", "ninja"]
+
+[tool.cibuildwheel.android]
+build-frontend = "build"
+environment.ANDROID_API_LEVEL = "24"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 [project]
-name = "calculator_pkg_ex_jp"
+name = "calculator_ex_pkg"
 version = "0.7.0"
 requires-python = ">=3.10"
 description = "Calculator demo with pybind11"
 readme = "README.md"
 authors = [
-    {name = "Jimmy Padilla", email = "ojimmy05o@gmail.com"},
+    {name = "Justin Furuness", email = "jfuruness@gmail.com"},
 ]
 maintainers = [
-  {name = "Jimmy Padilla", email = "ojimmy05o@gmail.com"}
+  {name = "Justin Furuness", email = "jfuruness@gmail.com"}
 ]
 license = {file = "LICENSE.txt"}
 keywords = [
     "PyBind11",
-    "Padilla"
+    "Furuness"
 ]
 classifiers = [
     "Programming Language :: Python :: 3.10",
@@ -40,11 +78,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/jfuruness/calculator_pkg_ex_jp"
-Documentation = "https://github.com/jfuruness/calculator_pkg_ex/wiki"
+Homepage = "https://github.com/jfuruness/calculator_ex_pkg"
+Documentation = "https://github.com/jfuruness/calculator_pkg_ex_jp/wiki"
 
 [project.scripts]
-calculator_pkg_ex = "calculator_pkg_ex.__main__:main"
+calculator_pkg_ex_jp = "calculator_pkg_ex_jp.__main__:main"
 
 [project.optional-dependencies]
 test = [
@@ -61,12 +99,14 @@ include-package-data = true
 
 # https://stackoverflow.com/a/76214408/8903959
 [tool.setuptools.package-data]
-calculator_pkg_ex = ["py.typed"]
+calculator_pkg_ex_jp = ["py.typed"]
 
 # https://stackoverflow.com/a/76214408/8903959
 [tool.setuptools.packages.find]
-where = ["."]
+where = [".", "src"]
 exclude = ["scripts", "scripts.*"]
+
+
 
 [tool.pytest.ini_options]
 addopts = "-rxXs -v"  # Shows reasons for skipping, xfailing, etc
@@ -252,6 +292,8 @@ ignore = [
     "PT018",
     # This seems to want every single object to have a hash lol
     "PLW1641",
+    "T201",  # Fine for this project
+    "A001",  # fine for this project
 ]
 
 unfixable = []
@@ -261,9 +303,12 @@ unfixable = []
 "**/__init__.py" = ["I"]
 # tests can use private vars
 "**/tests/**/*.py" = ["SLF001"]
+# Allow print statements in CLI entrypoint and demo code
+"**/__main__.py" = ["T201"]
+"**/calculator.py" = ["T201"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["calculator_pkg_ex"]
+known-first-party = ["calculator_pkg_ex_jp"]
 
 [tool.ruff.lint.flake8-bugbear]
 # Allow default arguments like, e.g., `data: frozendict[str, str] = frozendict()
